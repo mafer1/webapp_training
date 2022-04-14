@@ -10,3 +10,6 @@ class Point(NamedTuple):
 
     def __repr__(self) -> str:
         return f"Point coordinates x:{self.x}, y:{self.y}, z:{self.z}"
+
+class Storage:
+    ...
