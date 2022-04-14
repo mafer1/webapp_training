@@ -27,6 +27,7 @@ class Storage:
     def get_cordinates(self):
         return [(point.x, point.y, point.z) for point in self.storage]
 
-
-class Cache:
-    ...
+    class Cache:
+        def __init__(self, storage, cache_capacity) -> None:
+            self.storage = storage
+            self.cache_capacity = cache_capacity
