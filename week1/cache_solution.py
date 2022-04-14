@@ -13,6 +13,8 @@ class Point(NamedTuple):
 
 
 class Storage:
+    """Points storage"""
+
     def put(self, *args):
         if isinstance(args[0], Point):
             self.storage.appendleft(args[0])
