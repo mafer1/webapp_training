@@ -23,3 +23,7 @@ class Storage:
 
     def get_cordinates(self):
         return [(point.x, point.y, point.z) for point in self.storage]
+
+
+class Cache:
+    ...
