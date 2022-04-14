@@ -1,4 +1,7 @@
+import numbers
+from tokenize import Number
 from typing import NamedTuple, Union
+from unicodedata import numeric
 
 
 class Point(NamedTuple):
