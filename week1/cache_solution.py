@@ -16,6 +16,13 @@ class Point(NamedTuple):
 class Storage:
     """Points storage"""
 
+    def __init__(self, cache_capacity) -> None:
+        self.storage = deque()
+        self.cache_capacity = cache_capacity
+        self.cache = self.Cache(self.storage, cache_capacity)
+        self.cache_lru = self.cache.get_last_recent()
+        self.cache_lfu = self.cache.get_least_frequently()
+
     def put(self, *args):
         if isinstance(args[0], Point):
             self.storage.appendleft(args[0])
