@@ -1,7 +1,5 @@
-import numbers
-from tokenize import Number
+from collections import Counter, deque
 from typing import NamedTuple, Union
-from unicodedata import numeric
 
 
 class Point(NamedTuple):
@@ -31,3 +29,11 @@ class Storage:
         def __init__(self, storage, cache_capacity) -> None:
             self.storage = storage
             self.cache_capacity = cache_capacity
+
+        # Least recently used (LRU)
+        def get_last_recent(self):
+            return deque(self.storage, maxlen=self.cache_capacity)
+
+        # Least-frequently used (LFU)
+        def get_least_frequently(self):
+            return Counter(self.storage).most_common(self.cache_capacity)
