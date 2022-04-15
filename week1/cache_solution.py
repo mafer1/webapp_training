@@ -27,11 +27,10 @@ class Storage:
             self.storage.append(Point(args[0], args[1], args[2]))
 
     def get(self, *args):
-        if isinstance(args[0], Point):
-
-            self.storage.append(args[0])
-        else:
-            self.storage.append(Point(args[0], args[1], args[2]))
+        _point: Point = args[0] if isinstance(args[0], Point) else Point(args[0], args[1], args[2])
+        if _point in self.cache.lfu_cache.cache or _point in self.cache.lru_cache.cache:
+            return _point
+        return "Point does not exist in Cache"
 
     class Cache:
         def __init__(self, storage, capacity):
