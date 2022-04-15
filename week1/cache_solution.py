@@ -21,10 +21,11 @@ class Storage:
         self.cache = self.Cache(self.storage, cache_capacity)
 
     def put(self, *args):
-        if isinstance(args[0], Point):
-            self.storage.append(args[0])
-        else:
-            self.storage.append(Point(args[0], args[1], args[2]))
+        _point: Point = args[0] if isinstance(args[0], Point) else Point(args[0], args[1], args[2])
+        _id = random.randint(0,10000)
+        self.storage.append(_point)
+        self.cache.lru_cache.put(_id, _point)
+        self.cache.lfu_cache.put(_id, _point)
 
     def get(self, *args):
         _point: Point = args[0] if isinstance(args[0], Point) else Point(args[0], args[1], args[2])
@@ -39,12 +40,11 @@ class Storage:
     class Cache:
         def __init__(self, storage, capacity):
             self.capacity = capacity
-            self.lru_cache = self.LRUCache(storage, capacity)
-            self.lfu_cache = ...
+            self.lru_cache = self.LRUCache(capacity)
+            self.lfu_cache = self.LFUCache(capacity)
 
         class LRUCache:
-            def __init__(self, storage, capacity: int):
-                self.storage = storage
+            def __init__(self, capacity: int):
                 self.cache = OrderedDict()
                 self.capacity = capacity
 
