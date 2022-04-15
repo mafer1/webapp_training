@@ -17,7 +17,7 @@ class Storage:
     """Points storage"""
 
     def __init__(self, cache_capacity: int) -> None:
-        self.storage: list[Point]= []
+        self.storage: list[Point] = []
         self.cache = self.Cache(self.storage, cache_capacity)
 
     def put(self, *args):
@@ -28,7 +28,7 @@ class Storage:
 
     def get(self, *args):
         if isinstance(args[0], Point):
-            
+
             self.storage.append(args[0])
         else:
             self.storage.append(Point(args[0], args[1], args[2]))
@@ -40,7 +40,6 @@ class Storage:
             self.lfu_cache = ...
 
         class LRUCache:
-    
             def __init__(self, storage, capacity: int):
                 self.storage = storage
                 self.cache = OrderedDict()
@@ -57,4 +56,4 @@ class Storage:
                 self.cache[key] = value
                 self.cache.move_to_end(key)
                 if len(self.cache) > self.capacity:
-                    self.cache.popitem(last = False)
+                    self.cache.popitem(last=False)
