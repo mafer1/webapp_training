@@ -1,5 +1,5 @@
 from collections import Counter, deque
-from typing import NamedTuple, Union
+from typing import NamedTuple, Union, OrderedDict
 
 
 class Point(NamedTuple):
@@ -16,31 +16,45 @@ class Point(NamedTuple):
 class Storage:
     """Points storage"""
 
-    def __init__(self, cache_capacity) -> None:
-        self.storage = deque()
-        self.cache_capacity = cache_capacity
+    def __init__(self, cache_capacity: int) -> None:
+        self.storage: list[Point]= []
         self.cache = self.Cache(self.storage, cache_capacity)
-        self.cache_lru = self.cache.get_last_recent()
-        self.cache_lfu = self.cache.get_least_frequently()
 
     def put(self, *args):
         if isinstance(args[0], Point):
-            self.storage.appendleft(args[0])
+            self.storage.append(args[0])
         else:
-            self.storage.appendleft(Point(args[0], args[1], args[2]))
+            self.storage.append(Point(args[0], args[1], args[2]))
 
-    def get_cordinates(self):
-        return [(point.x, point.y, point.z) for point in self.storage]
+    def get(self, *args):
+        if isinstance(args[0], Point):
+            
+            self.storage.append(args[0])
+        else:
+            self.storage.append(Point(args[0], args[1], args[2]))
 
     class Cache:
-        def __init__(self, storage, cache_capacity) -> None:
-            self.storage = storage
-            self.cache_capacity = cache_capacity
+        def __init__(self, storage, capacity):
+            self.capacity = capacity
+            self.lru_cache = self.LRUCache(storage, capacity)
+            self.lfu_cache = ...
 
-        # Least recently used (LRU)
-        def get_last_recent(self):
-            return deque(self.storage, maxlen=self.cache_capacity)
+        class LRUCache:
+    
+            def __init__(self, storage, capacity: int):
+                self.storage = storage
+                self.cache = OrderedDict()
+                self.capacity = capacity
 
-        # Least-frequently used (LFU)
-        def get_least_frequently(self):
-            return Counter(self.storage).most_common(self.cache_capacity)
+            def get(self, key: int) -> int:
+                if key not in self.cache:
+                    return -1
+                else:
+                    self.cache.move_to_end(key)
+                    return self.cache[key]
+
+            def put(self, key: int, value: int) -> None:
+                self.cache[key] = value
+                self.cache.move_to_end(key)
+                if len(self.cache) > self.capacity:
+                    self.cache.popitem(last = False)
