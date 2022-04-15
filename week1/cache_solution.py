@@ -28,7 +28,11 @@ class Storage:
 
     def get(self, *args):
         _point: Point = args[0] if isinstance(args[0], Point) else Point(args[0], args[1], args[2])
-        if _point in self.cache.lfu_cache.cache or _point in self.cache.lru_cache.cache:
+        if (_point.x, _point.y, _point.z) in [
+            (point.x, point.y, point.z) for point in self.cache.lru_cache.cache.values()
+        ] or (_point.x, _point.y, _point.z) in [
+            (point.x, point.y, point.z) for point in self.cache.lfu_cache.cache.values()
+        ]:
             return _point
         return "Point does not exist in Cache"
 
