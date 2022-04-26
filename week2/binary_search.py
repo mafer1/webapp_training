@@ -12,11 +12,13 @@ class BinarySearch:
 
         while True:
             self.steps_count += 1
-            if self.value < _range[len(_range) // 2]:
+            if _range[len(_range) // 2] > self.value > self.start:
                 _range = _range[: len(_range) // 2]
 
             elif self.value == _range[len(_range) // 2]:
                 return self.value, self.steps_count
 
+            elif _range[len(_range) // 2] < self.value < self.end:
+                _range = _range[len(_range) // 2:]
             else:
-                _range = _range[len(_range) // 2 :]
+                return "Value out of range"
