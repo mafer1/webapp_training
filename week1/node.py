@@ -1,8 +1,9 @@
-from os import preadv
-
-
 class Node:
-    def __init__(self, prev, next, data) -> None:
-        self.prev = None
+    """
+    Class which is resposible for ordering and locations for elements in cache
+    """
+
+    def __init__(self, content=None):
         self.next = None
-        self.data = data
+        self.frequency = 0
+        self.content = None
